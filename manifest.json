@@ -1,0 +1,10 @@
+{
+  "name": "Bowser \u2014 Moorhead Fleet Fuel",
+  "short_name": "Bowser",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0c0e12",
+  "theme_color": "#0c0e12",
+  "lang": "en-GB",
+  "description": "ADR diesel sheet and bowser fills for Moorhead wagons and plant. UN 1202 DERV."
+}
