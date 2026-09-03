@@ -8,117 +8,71 @@
   <meta name="apple-mobile-web-app-title" content="Bowser">
   <title>Bowser — Moorhead Fleet Fuel</title>
   <link rel="manifest" href="./manifest.json">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./assets/app.css">
 </head>
 <body>
   <header class="app-header">
-    <div class="brand">
-      <div class="mark">MH</div>
-      <div>
-        <h1>Bowser</h1>
-        <p>Moorhead fleet fuel</p>
-      </div>
-    </div>
+    <div class="brand"><div class="mark">MH</div><div><h1>Bowser</h1><p>Moorhead fleet fuel</p></div></div>
     <div class="header-actions">
-      <button class="icon-btn" title="Diesel into bowser" onclick="addDelivery()">⛽</button>
-      <button class="icon-btn" title="Export log" onclick="exportCsv()">⬇</button>
+      <button class="icon-btn" onclick="addDelivery()">⛽</button>
+      <button class="icon-btn" onclick="exportCsv()">⬇</button>
     </div>
   </header>
   <main>
     <section class="view active" data-view="home">
-      <div class="hero-cta">
-        <div>
-          <h2>Refuel from the bowser</h2>
-          <p>Litres, hours, tank full. One screen for the lad on the pump.</p>
-        </div>
-        <button class="btn primary" onclick="sheetDate=todayISO();setView('sheet')">Today's sheet</button>
-      </div>
+      <div class="hero-cta"><div><h2>Refuel from the bowser</h2><p>Litres, hours, tank full.</p></div>
+        <button class="btn primary" onclick="sheetDate=todayISO();setView('sheet')">Today's sheet</button></div>
       <div class="kpis">
-        <div class="kpi"><div class="label">Litres · 7 days</div><div class="value num" id="kpi-litres">0</div><div class="hint">Dispensed from bowsers</div></div>
-        <div class="kpi"><div class="label">Fills · 7 days</div><div class="value num" id="kpi-fills">0</div><div class="hint">Plant + tippers</div></div>
-        <div class="kpi"><div class="label">Tanks marked full</div><div class="value num" id="kpi-full">—</div><div class="hint">Needed for honest L/hr</div></div>
-        <div class="kpi"><div class="label">Bowser stock</div><div class="value num" id="kpi-stock">0</div><div class="hint">Litres remaining</div></div>
+        <div class="kpi"><div class="label">Litres · 7 days</div><div class="value num" id="kpi-litres">0</div></div>
+        <div class="kpi"><div class="label">Fills · 7 days</div><div class="value num" id="kpi-fills">0</div></div>
+        <div class="kpi"><div class="label">Tanks marked full</div><div class="value num" id="kpi-full">—</div></div>
+        <div class="kpi"><div class="label">Bowser stock</div><div class="value num" id="kpi-stock">0</div></div>
       </div>
-      <div class="panel">
-        <h2>FD73 WVY <span>live bowser + compliance</span></h2>
-        <div id="home-bowser"></div>
-      </div>
+      <div class="panel"><h2>FD73 WVY</h2><div id="home-bowser"></div></div>
       <div class="split two">
-        <div class="panel">
-          <h2>Latest fills <span>tap for detail</span></h2>
-          <div class="list" id="home-log"></div>
-        </div>
-        <div class="panel">
-          <h2>Watch list <span>high burn vs expected</span></h2>
-          <div class="list" id="home-hot"></div>
-        </div>
+        <div class="panel"><h2>Latest fills</h2><div class="list" id="home-log"></div></div>
+        <div class="panel"><h2>Watch list</h2><div class="list" id="home-hot"></div></div>
       </div>
     </section>
     <section class="view" data-view="sheet">
       <div class="adr-banner">UN 1202 · DERV · 311 (D/E) — ENVIRONMENTALLY HAZARDOUS</div>
       <div class="panel">
-        <h2>Daily diesel sheet <span>wagons + machines</span></h2>
-        <div class="adr-meta">
-          <div><div class="muted">Consignor</div><strong>Moorhead Excavations Ltd</strong><div class="muted">Westfield Court, Lower Wortley Road, Leeds LS12 4PX</div></div>
-          <div><div class="muted">Consignee</div><strong>Moorhead Excavations Ltd</strong><div class="muted">Operating Sites</div></div>
-        </div>
-        <div class="grid-2 stack" style="margin-top:12px">
+        <h2>Daily diesel sheet</h2>
+        <div class="grid-2 stack">
           <div class="field"><label>Date</label><input id="sheet-date" type="date" onchange="changeSheetDate(this.value)"></div>
           <div class="field"><label>Driver</label><input id="sheet-driver" onchange="setSheetMeta('driver', this.value)"></div>
         </div>
         <div class="kpis">
-          <div class="kpi"><div class="label">Onboard</div><input class="kpi-input num" id="sheet-onboard" type="number" inputmode="decimal" onchange="setSheetMeta('onboard', this.value)"><div class="hint">Start of run (L)</div></div>
-          <div class="kpi"><div class="label">Delivered</div><div class="value num" id="sheet-delivered">0</div><div class="hint">Sum of this sheet</div></div>
-          <div class="kpi"><div class="label">Total onboard</div><div class="value num" id="sheet-total">0</div><div class="hint">As started</div></div>
-          <div class="kpi"><div class="label">On board after</div><input class="kpi-input num" id="sheet-after" type="number" inputmode="decimal" onchange="setSheetMeta('onboardAfter', this.value)"><div class="hint" id="sheet-after-hint">Dip / ticket at end</div></div>
-        </div>
-        <div class="row" style="margin-bottom:8px">
-          <button class="btn sm" onclick="addMachineLine()">+ Machine</button>
-          <button class="btn sm" onclick="printSheet()">Print / PDF</button>
+          <div class="kpi"><div class="label">Onboard</div><input class="kpi-input num" id="sheet-onboard" type="number" onchange="setSheetMeta('onboard', this.value)"></div>
+          <div class="kpi"><div class="label">Delivered</div><div class="value num" id="sheet-delivered">0</div></div>
+          <div class="kpi"><div class="label">Total onboard</div><div class="value num" id="sheet-total">0</div></div>
+          <div class="kpi"><div class="label">On board after</div><input class="kpi-input num" id="sheet-after" type="number" onchange="setSheetMeta('onboardAfter', this.value)"><div class="hint" id="sheet-after-hint"></div></div>
         </div>
       </div>
       <div class="split two">
         <div class="panel">
-          <h2>Wagons <span>reg · km · litres · location</span></h2>
+          <h2>Wagons</h2>
+          <div class="field"><label>Wagon</label><select id="sheet-pick-wagon" onchange="if(this.value){editWagonLine(this.value);this.selectedIndex=0}"><option value="">Select wagon…</option></select></div>
           <div class="sheet-head"><span>Reg</span><span>Km</span><span>Litres</span><span>Location</span></div>
           <div id="sheet-wagons"></div>
           <h2 style="margin-top:16px">Other</h2>
-          <div class="sheet-head"><span>Reg</span><span>Km</span><span>Litres</span><span>Location</span></div>
           <div id="sheet-other"></div>
         </div>
         <div class="panel">
           <h2>Machines</h2>
+          <div class="field"><label>Machine</label><select id="sheet-pick-machine" onchange="pickSheetMachine(this.value);this.selectedIndex=0"><option value="">Select machine…</option></select></div>
           <div class="list" id="sheet-machines"></div>
         </div>
       </div>
     </section>
-    <section class="view" data-view="fill"><div class="panel"><h2>New fill</h2><div id="asset-picked"></div><p class="muted">Use Sheet for the daily ADR card. This form is the single-machine fallback.</p><button class="btn" onclick="setView('sheet')">Back to sheet</button></div></section>
-    <section class="view" data-view="log">
-      <div class="search"><span>⌕</span><input id="log-q" placeholder="Search fleet, site, operator" oninput="renderLog()"></div>
-      <div class="filters" id="log-chips">
-        <button class="chip on" data-filter="all" onclick="logFilter='all';renderLog()">All</button>
-        <button class="chip" data-filter="plant" onclick="logFilter='plant';renderLog()">Plant</button>
-        <button class="chip" data-filter="tipper" onclick="logFilter='tipper';renderLog()">Tippers</button>
-        <button class="chip" data-filter="part" onclick="logFilter='part';renderLog()">Part fills</button>
-      </div>
-      <div class="list" id="log-list"></div>
-    </section>
-    <section class="view" data-view="fleet">
-      <div class="row" style="margin-bottom:12px">
-        <div class="search grow" style="margin:0"><span>⌕</span><input id="fleet-q" placeholder="Search fleet" oninput="renderFleet()"></div>
-        <button class="btn primary" onclick="addAsset()">Add machine</button>
-      </div>
-      <div class="list" id="fleet-list"></div>
-    </section>
+    <section class="view" data-view="fill"><div class="panel"><h2>New fill</h2><div class="grid-2"><div class="field"><label>Wagon</label><select id="f-wagon" onchange="pickFromDropdown('wagon', this.value)"></select></div><div class="field"><label>Machine</label><select id="f-machine" onchange="pickFromDropdown('machine', this.value)"></select></div></div><div id="asset-picked"></div><button class="btn" onclick="setView('sheet')">Back to sheet</button></div></section>
+    <section class="view" data-view="log"><div class="search"><input id="log-q" placeholder="Search" oninput="renderLog()"></div><div class="list" id="log-list"></div></section>
+    <section class="view" data-view="fleet"><div class="search"><input id="fleet-q" placeholder="Search fleet" oninput="renderFleet()"></div><button class="btn primary" onclick="addAsset()">Add machine</button><div class="list" id="fleet-list"></div></section>
     <section class="view" data-view="report">
       <div class="filters" id="rep-range">
         <button class="chip" data-days="7" onclick="reportRange=7;renderReport()">7 days</button>
         <button class="chip on" data-days="14" onclick="reportRange=14;renderReport()">14 days</button>
         <button class="chip" data-days="30" onclick="reportRange=30;renderReport()">30 days</button>
-        <button class="chip" data-days="90" onclick="reportRange=90;renderReport()">90 days</button>
       </div>
       <div class="kpis">
         <div class="kpi"><div class="label">Total used</div><div class="value num" id="rep-total">0</div></div>
@@ -126,29 +80,15 @@
         <div class="kpi"><div class="label">Tippers</div><div class="value num" id="rep-tip">0</div></div>
         <div class="kpi"><div class="label">Fills</div><div class="value num" id="rep-fills">0</div></div>
       </div>
-      <div class="panel"><h2>Usage by machine</h2><div class="bars" id="rep-bars"></div></div>
-      <div class="split two">
-        <div class="panel"><h2>By site</h2><div class="table-wrap"><table><thead><tr><th>Site</th><th class="right">Litres</th></tr></thead><tbody id="rep-sites"></tbody></table></div></div>
-        <div class="panel"><h2>Bowser position</h2><div class="table-wrap"><table><thead><tr><th>Bowser</th><th class="right">Cap</th><th class="right">Stock</th><th class="right">Out</th><th class="right">In</th></tr></thead><tbody id="rep-bowser"></tbody></table></div><button class="btn sm" onclick="addDelivery()">Book diesel in</button></div>
-      </div>
-      <div class="panel">
-        <h2>Fleet burn</h2>
-        <div class="table-wrap"><table><thead><tr><th>Machine</th><th>Type</th><th class="right">Litres</th><th>Burn</th><th>Expected</th><th>Last fill</th></tr></thead><tbody id="rep-table"></tbody></table></div>
-        <div class="row" style="margin-top:12px">
-          <button class="btn" onclick="exportUsageCsv()">Export usage CSV</button>
-          <button class="btn" onclick="exportCsv()">Export fill log</button>
-          <button class="btn" onclick="exportBackup()">Backup JSON</button>
-          <button class="btn danger" onclick="resetDemo()">Reset demo data</button>
-        </div>
+      <div class="panel"><h2>Usage</h2><div class="bars" id="rep-bars"></div></div>
+      <div class="panel"><table><thead><tr><th>Site</th><th class="right">Litres</th></tr></thead><tbody id="rep-sites"></tbody></table></div>
+      <div class="panel"><table><thead><tr><th>Bowser</th><th class="right">Cap</th><th class="right">Stock</th><th class="right">Out</th><th class="right">In</th></tr></thead><tbody id="rep-bowser"></tbody></table></div>
+      <div class="panel"><table><thead><tr><th>Machine</th><th>Type</th><th class="right">Litres</th><th>Burn</th><th>Expected</th><th>Last fill</th></tr></thead><tbody id="rep-table"></tbody></table>
+        <button class="btn" onclick="exportCsv()">Export CSV</button>
+        <button class="btn danger" onclick="resetDemo()">Reset demo data</button>
       </div>
     </section>
-    <section class="view" data-view="docs">
-      <div class="panel"><h2>Bowser pack <span>FD73 WVY · tank 22.4145</span></h2><div id="docs-plate"></div></div>
-      <div class="search"><span>⌕</span><input id="docs-q" placeholder="Search certificates" oninput="renderDocs()"></div>
-      <div class="filters" id="docs-chip-row"></div>
-      <div id="docs-group" data-group="all" hidden></div>
-      <div class="list" id="docs-list"></div>
-    </section>
+    <section class="view" data-view="docs"><div class="panel"><h2>Bowser pack</h2><div id="docs-plate"></div></div><div class="list" id="docs-list"></div></section>
   </main>
   <nav class="nav">
     <button class="on" data-view="home" onclick="setView('home')">Home</button>
@@ -158,18 +98,14 @@
     <button data-view="docs" onclick="setView('docs')">Docs</button>
     <button data-view="report" onclick="setView('report')">Reports</button>
   </nav>
-  <div class="toast" id="toast" role="status"></div>
-  <div class="modal-back" id="modal" onclick="if(event.target===this)closeModal()">
-    <div class="modal">
-      <div class="row" style="justify-content:space-between;align-items:center;margin-bottom:12px">
-        <h2 id="modal-title">Detail</h2>
-        <button class="icon-btn" onclick="closeModal()">✕</button>
-      </div>
-      <div id="modal-body"></div>
-    </div>
-  </div>
+  <div class="toast" id="toast"></div>
+  <div class="modal-back" id="modal" onclick="if(event.target===this)closeModal()"><div class="modal"><div class="row" style="justify-content:space-between"><h2 id="modal-title">Detail</h2><button class="icon-btn" onclick="closeModal()">✕</button></div><div id="modal-body"></div></div></div>
   <script src="./assets/docs-catalog.js"></script>
   <script src="./assets/fleet-catalog.js"></script>
-  <script src="./assets/app.js"></script>
+  <script src="./assets/app-1.js"></script>
+  <script src="./assets/app-2.js"></script>
+  <script src="./assets/app-3.js"></script>
+  <script src="./assets/app-4.js"></script>
+  <script src="./assets/app-sheet.js"></script>
 </body>
 </html>
