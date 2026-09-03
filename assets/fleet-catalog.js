@@ -1,47 +1,9 @@
-/* Paper diesel sheet fleet — updated 27.03.26 */
-const PAPER_WAGONS = [
-  "MV73 YPJ", "MV73 YPK", "MV73 YPL", "MV73 YPM",
-  "MC24 OSG", "MC24 OSJ", "MC24 OSK",
-  "MV25 GTU", "MV25 GTY", "MV25 GTZ",
-  "MV75 EHR", "MV75 EHS",
-  "MV26 DXL", "MV26 DXM", "MV26 DXO"
-];
-
-const PAPER_OTHER = [
-  { reg: "FD73 WVY", type: "bowser", category: "ADR tanker bowser", meter: "miles" },
-  { reg: "DG75 ULV", type: "tipper", category: "Wagon / tanker", meter: "miles" },
-  { reg: "YG21 EBA", type: "tipper", category: "Support wagon", meter: "miles" },
-  { reg: "WU20 FBL", type: "tipper", category: "Support wagon", meter: "miles" }
-];
-
-function paperAssets() {
-  const wagons = PAPER_WAGONS.map((reg) => ({
-    id: "w-" + reg.replace(/\s+/g, ""),
-    fleetNo: reg,
-    reg,
-    type: "tipper",
-    category: "Tipper wagon",
-    make: "",
-    model: "",
-    tank: 400,
-    meter: "miles",
-    expected: 5.5,
-    unitExpect: "mpg",
-    onSheet: "wagon"
-  }));
-  const other = PAPER_OTHER.map((o) => ({
-    id: "w-" + o.reg.replace(/\s+/g, ""),
-    fleetNo: o.reg,
-    reg: o.reg,
-    type: o.type,
-    category: o.category,
-    make: "",
-    model: "",
-    tank: o.type === "bowser" ? 14153 : 400,
-    meter: o.meter,
-    expected: 5.5,
-    unitExpect: "mpg",
-    onSheet: o.reg === "FD73 WVY" ? "bowser" : "other"
-  }));
-  return [...wagons, ...other];
+const PAPER_WAGONS=["MV73 YPJ","MV73 YPK","MV73 YPL","MV73 YPM","MC24 OSG","MC24 OSJ","MC24 OSK","MV25 GTU","MV25 GTY","MV25 GTZ","MV75 EHR","MV75 EHS","MV26 DXL","MV26 DXM","MV26 DXO"];
+const PAPER_OTHER=[{reg:"FD73 WVY",type:"bowser",category:"ADR tanker bowser",meter:"miles"},{reg:"DG75 ULV",type:"tipper",category:"Wagon / tanker",meter:"miles"},{reg:"YG21 EBA",type:"tipper",category:"Support wagon",meter:"miles"},{reg:"WU20 FBL",type:"tipper",category:"Support wagon",meter:"miles"}];
+const PAPER_PLANT=[{name:"13t 360",category:"360 excavator",tank:200,expected:12},{name:"20t 360",category:"360 excavator",tank:350,expected:16},{name:"22t 360",category:"360 excavator",tank:400,expected:18},{name:"30t 360",category:"360 excavator",tank:550,expected:24},{name:"35t 360",category:"360 excavator",tank:620,expected:28},{name:"8t 360",category:"Midi excavator",tank:120,expected:8},{name:"6t dumper",category:"Site dumper",tank:80,expected:6},{name:"9t dumper",category:"Site dumper",tank:100,expected:8},{name:"Telehandler",category:"Telehandler",tank:140,expected:10},{name:"Roller",category:"Compactor",tank:90,expected:8},{name:"Dozer",category:"Dozer",tank:400,expected:22},{name:"Loading shovel",category:"Wheeled loader",tank:280,expected:16}];
+function paperAssets(){
+  const wagons=PAPER_WAGONS.map(reg=>({id:"w-"+reg.replace(/\s+/g,""),fleetNo:reg,reg,type:"tipper",category:"Tipper wagon",make:"",model:"",tank:400,meter:"miles",expected:5.5,unitExpect:"mpg",onSheet:"wagon"}));
+  const other=PAPER_OTHER.map(o=>({id:"w-"+o.reg.replace(/\s+/g,""),fleetNo:o.reg,reg:o.reg,type:o.type,category:o.category,make:"",model:"",tank:o.type==="bowser"?14153:400,meter:o.meter,expected:5.5,unitExpect:"mpg",onSheet:o.reg==="FD73 WVY"?"bowser":"other"}));
+  const plant=PAPER_PLANT.map(p=>({id:"p-"+p.name.replace(/\s+/g,""),fleetNo:p.name,reg:p.name,type:"plant",category:p.category,make:"",model:"",tank:p.tank,meter:"hours",expected:p.expected,unitExpect:"L/hr",onSheet:"machine"}));
+  return [...wagons,...other,...plant];
 }
